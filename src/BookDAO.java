@@ -119,5 +119,73 @@ public class BookDAO {
             System.out.println(e.getMessage());
         }
     }
+    public void totalBooks(){
+        String sql = "select count(*) from books";
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                System.out.println("Total Books: " + rs.getInt(1));
+            }
+            else{
+                System.out.println("Books not Found");
+            }
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    public void viewAvailableBooks(){
+        String sql = "Select * from books where available = true";
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                System.out.println(
+                    "Book ID: "+ rs.getInt("book_id") + 
+                    ", Title: " + rs.getString("title")+
+                    ", Author: " + rs.getString("author")
+                );
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void viewIssuedBooks(){
+        String sql = "Select * from books where available = false";
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                System.out.println(
+                    "Book ID: "+ rs.getInt("book_id") + 
+                    ", Title: " + rs.getString("title")+
+                    ", Author: " + rs.getString("author")
+                );
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public Book searchBookByTitle(String title){
+        String sql = "select * from books where title = ?";
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1,title);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                return new Book(rs.getInt("book_id"), rs.getString("title"), rs.getString("author"), rs.getBoolean("available"));
+            }
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
 }

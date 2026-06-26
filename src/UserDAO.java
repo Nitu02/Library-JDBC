@@ -73,5 +73,37 @@ public class UserDAO {
             System.out.println(e.getMessage());
         }
     }
+    public void totalUsers(){
+        String sql = "select count(*) from users";
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                System.out.println("Total Users: " + rs.getInt(1));
+            }
+            else{
+                System.out.println("Users not Found");
+            }
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public User searchUserByName(String name){
+        String sql = "select * from users where name =  ?";
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1,name);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                return new User(rs.getInt("user_id"),rs.getString("name"));
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
     
 }

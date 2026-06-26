@@ -12,22 +12,29 @@ public class Main {
             System.out.println("\n--------------User Management-------------------");
             System.out.println("1. Add User");
             System.out.println("2. View Users");
-            System.out.println("3. Search User");
+            System.out.println("3. Search User By ID");
             System.out.println("4. Delete User");
+            System.out.println("5. Total Users");
+            System.out.println("6. Search User By Name");
             System.out.println("\n ------------------Book Management-----------------");
-            System.out.println("5. Add Book");
-            System.out.println("6. View Book");
-            System.out.println("7. Search Book");
-            System.out.println("8. Delete Book");
-            System.out.println("9. Issue Book");
-            System.out.println("10. Return Book");
+            System.out.println("7. Add Book");
+            System.out.println("8. View Book");
+            System.out.println("9. Search Book By ID");
+            System.out.println("10. Delete Book");
+            System.out.println("11. Issue Book");
+            System.out.println("12. Return Book");
+            System.out.println("13. Total Books");
+            System.out.println("14. Search Book By Title");
+            System.out.println("\n---------------------------Report-------------------");
+            System.out.println("15. View Available Book");
+            System.out.println("16. View Issued Book");
             System.out.println("\n --------------------Exit-------------");
-            System.out.println("11. Exit");
+            System.out.println("17. Exit");
 
             System.out.println("Enter Choice: ");
             int choice = sc.nextInt();
 
-            if(choice == 11){
+            if(choice == 17){
                 break;
             }
 
@@ -66,6 +73,23 @@ public class Main {
                     break;
                 }
                 case 5:{
+                    userDAO.totalUsers();
+                    break;
+                }
+                case 6:{
+                    sc.nextLine();
+                    System.out.println("Enter the name of User ");
+                    String name = sc.nextLine();
+                    User user = userDAO.searchUserByName(name);
+                    if(user != null){
+                        System.out.println(user);
+                    }
+                    else{
+                        System.out.println("User not Found");
+                    }
+                    break;
+                }
+                case 7:{
                     System.out.println("Enter Book Id: ");
                     int bookId = sc.nextInt();
                     sc.nextLine();
@@ -78,11 +102,11 @@ public class Main {
                     bookDAO.addBook(book);
                     break;
                 }
-                case 6:{
+                case 8:{
                     bookDAO.viewBooks();
                     break;
                 }
-                case 7:{
+                case 9:{
                     System.out.println("Enter Book Id: ");
                     int searchBookId = sc.nextInt();
                     Book foundBook = bookDAO.searchBookById(searchBookId);
@@ -94,13 +118,13 @@ public class Main {
                     }
                     break;
                 }
-                case 8:{
+                case 10:{
                     System.out.println("Enter Book Id:");
                     int deleteBookId= sc.nextInt();
                     bookDAO.deleteBookById(deleteBookId);
                     break;
                 }
-                case 9:{
+                case 11:{
                     System.out.println("Enter Book Id:");
                     int issueBookId = sc.nextInt();
                     System.out.println("Enter User Id: ");
@@ -108,16 +132,36 @@ public class Main {
                     bookDAO.issueBook(issueBookId, issueUserId);
                     break;
                 }
-                case 10:{
+                case 12:{
                     System.out.println("Enter the Book Id:");
                     int returnBookId = sc.nextInt();
                     bookDAO.returnBook(returnBookId);
                     break;
                 }
-                case 11:{
-                    System.out.println("ThankYou!!!");
-                    sc.close();
-                    return;
+                case 13:{
+                    bookDAO.totalBooks();
+                    break;
+                }
+                case 14:{
+                    sc.nextLine();
+                    System.out.println("Enter the title of Book");
+                    String title = sc.nextLine();
+                    Book book = bookDAO.searchBookByTitle(title);
+                    if(book != null){
+                        System.out.println(book);
+                    }
+                    else{
+                        System.out.println("Book not Found");
+                    }
+                    break;
+                }
+                case 15:{
+                    bookDAO.viewAvailableBooks();
+                    break;
+                }
+                case 16:{
+                    bookDAO.viewIssuedBooks();
+                    break;
                 }
                 default:{
                     System.out.println("Invalid Choice");
