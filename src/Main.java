@@ -5,6 +5,7 @@ public class Main {
 
         UserDAO userDAO = new UserDAO();
         BookDAO bookDAO = new BookDAO();
+        IssuedBookDAO issuedBookDAO = new IssuedBookDAO();
         Scanner sc = new Scanner(System.in);
 
         while(true){
@@ -129,13 +130,13 @@ public class Main {
                     int issueBookId = sc.nextInt();
                     System.out.println("Enter User Id: ");
                     int issueUserId = sc.nextInt();
-                    bookDAO.issueBook(issueBookId, issueUserId);
+                    issuedBookDAO.issueBook(issueBookId, issueUserId);
                     break;
                 }
                 case 12:{
                     System.out.println("Enter the Book Id:");
                     int returnBookId = sc.nextInt();
-                    bookDAO.returnBook(returnBookId);
+                    issuedBookDAO.returnBook(returnBookId);
                     break;
                 }
                 case 13:{
@@ -170,7 +171,5 @@ public class Main {
             }
         }
         sc.close();
-
-
     }
 }

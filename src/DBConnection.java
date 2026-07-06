@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 public class DBConnection {
 
     private static final String URL =
-            "jdbc:mysql://localhost:3306/library_db";
+            "jdbc:mysql://localhost:3306/library_db_v2";
 
     private static final String USER = "root";
 
