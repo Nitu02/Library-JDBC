@@ -1,6 +1,11 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import java.util.ArrayList;
+
 public class BookDAO {
 
     public void addBook(Book book){
@@ -186,6 +191,56 @@ public class BookDAO {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+    public List<Book> searchBookByAuthor(String author){
+        List<Book> books= new ArrayList<>();
+        String sql = "select * from books where author like ?";
+        try{
+            Connection conn =DBConnection.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1,"%" +author+"%");
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                books.add(new Book(rs.getInt("book_id"), rs.getString("title"), rs.getString("author"), rs.getBoolean("available")));
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return books;
+
+    }
+
+    public void libraryStatistics(){
+        try{
+            Connection conn = DBConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+            rs = stmt.executeQuery("SELECT COUNT(*) FROM BOOKS");
+            rs.next();
+            int totalBooks = rs.getInt(1);
+
+            rs = stmt.executeQuery("Select count(*) from books where available = true");
+            rs.next();
+            int availableBooks = rs.getInt(1);
+
+            rs = stmt.executeQuery("Select count(*) from books where available = false");
+            rs.next();
+            int issuedBooks = rs.getInt(1);
+
+            rs = stmt.executeQuery("select count(*) from users");
+            rs.next();
+            int totalUsers = rs.getInt(1);
+
+            System.out.println("\n============ Libraray Statistics ===================");
+            System.out.println("Total Users       : "+totalUsers);
+            System.out.println("Total Books       : "+totalBooks);
+            System.out.println("Available Books   : "+availableBooks);
+            System.out.println("Issued Books      : "+issuedBooks);
+            System.out.println("=======================================================");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
 }

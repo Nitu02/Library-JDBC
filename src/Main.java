@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
@@ -26,16 +28,18 @@ public class Main {
             System.out.println("12. Return Book");
             System.out.println("13. Total Books");
             System.out.println("14. Search Book By Title");
+            System.out.println("15. Search Book By Author");
             System.out.println("\n---------------------------Report-------------------");
-            System.out.println("15. View Available Book");
-            System.out.println("16. View Issued Book");
+            System.out.println("16. View Available Book");
+            System.out.println("17. View Issued Book");
+            System.out.println("18. Library Statistics");
             System.out.println("\n --------------------Exit-------------");
-            System.out.println("17. Exit");
+            System.out.println("19. Exit");
 
             System.out.println("Enter Choice: ");
             int choice = sc.nextInt();
 
-            if(choice == 17){
+            if(choice == 19){
                 break;
             }
 
@@ -145,7 +149,7 @@ public class Main {
                 }
                 case 14:{
                     sc.nextLine();
-                    System.out.println("Enter the title of Book");
+                    System.out.println("Enter the title of Book: ");
                     String title = sc.nextLine();
                     Book book = bookDAO.searchBookByTitle(title);
                     if(book != null){
@@ -157,11 +161,30 @@ public class Main {
                     break;
                 }
                 case 15:{
+                    sc.nextLine();
+                    System.out.println("Enter the author of Book: ");
+                    String author = sc.nextLine();
+                    List<Book> books = bookDAO.searchBookByAuthor(author);
+                    if(books.isEmpty()){
+                        System.out.println("Book not Found");
+                    }else{
+                        for(Book book :books){
+                            System.out.println(book);
+                        }
+                    }
+                    break;
+
+                }
+                case 16:{
                     bookDAO.viewAvailableBooks();
                     break;
                 }
-                case 16:{
+                case 17:{
                     bookDAO.viewIssuedBooks();
+                    break;
+                }
+                case 18:{
+                    bookDAO.libraryStatistics();
                     break;
                 }
                 default:{

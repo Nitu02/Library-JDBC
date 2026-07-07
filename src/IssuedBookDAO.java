@@ -10,10 +10,11 @@ public class IssuedBookDAO {
     }
     public void issueBook(int bookId,int userId){
         try{
+            conn.setAutoCommit(false);
 
             //Check if Users exist
-            String  checckUser = "select * from users where user_id = ?";
-            PreparedStatement psUser = conn.prepareStatement(checckUser);
+            String  checkUser = "select * from users where user_id = ?";
+            PreparedStatement psUser = conn.prepareStatement(checkUser);
             psUser.setInt(1,userId);
             ResultSet userRs = psUser.executeQuery();
             if(!userRs.next()){
@@ -63,9 +64,25 @@ public class IssuedBookDAO {
             System.out.println("Book Issued Successfully!!!!");
             System.out.println("Issue Date: "+issueDate);
             System.out.println("Return Date: "+ returnDate);
+
+            conn.commit();
+
         }catch( SQLException e){
+            try{
+                conn.rollback();
+            }catch(SQLException ex){
+                ex.printStackTrace();
+            }
+            
             e.printStackTrace();
-        }        
+        }
+        finally{
+            try{
+                conn.setAutoCommit(true);
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }       
     }
 
     public void returnBook(int bookId) {
