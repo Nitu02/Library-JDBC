@@ -3,11 +3,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserDAO {
+    private Connection conn;
+
+    public UserDAO(){
+        conn = DBConnection.getConnection();
+    }
 
     public void addUser(User user){
         String sql = "INSERT INTO users(user_id,name) VALUES (?,?)";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
 
             pst.setInt(1,user.getUserId());
@@ -23,7 +28,7 @@ public class UserDAO {
     public void viewUser(){
         String sql = " select * from users";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
 
             ResultSet rs = pst.executeQuery();
@@ -40,7 +45,7 @@ public class UserDAO {
     public User searchUserById(int userId){
         String sql = "Select * from users where user_id =?";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,userId);
             ResultSet rs = pst.executeQuery();
@@ -57,12 +62,22 @@ public class UserDAO {
         return null;
     }
     public void deleteUser(int userId){
-        String sql = "DELETE from users where user_id =?";
+        
         try{
-            Connection conn = DBConnection.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
+
+            String checksql = "select * from issued_books where user_id = ?";            
+            PreparedStatement pst = conn.prepareStatement(checksql);
             pst.setInt(1,userId);
-            int rows=pst.executeUpdate();
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                System.out.println("Cannot delete this user. The user has issue history.");
+                return;
+            }
+            String sql = "DELETE from users where user_id =?";
+            PreparedStatement deletePst = conn.prepareStatement(sql);
+            deletePst.setInt(1,userId);
+
+            int rows=deletePst.executeUpdate();
             if(rows >0 ){
                 System.out.println("User Deleted Successfully!!");
             }else{
@@ -76,7 +91,7 @@ public class UserDAO {
     public void totalUsers(){
         String sql = "select count(*) from users";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
@@ -93,7 +108,7 @@ public class UserDAO {
     public User searchUserByName(String name){
         String sql = "select * from users where name =  ?";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1,name);
             ResultSet rs = pst.executeQuery();

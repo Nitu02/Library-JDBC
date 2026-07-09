@@ -8,10 +8,18 @@ import java.util.ArrayList;
 
 public class BookDAO {
 
+    private Connection conn;
+
+    public BookDAO(){
+        conn =DBConnection.getConnection();
+    }
+
+    
+
     public void addBook(Book book){
         String sql = "Insert into books(book_id,title,author,available) values(?,?,?,?) ";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
 
             pst.setInt(1,book.getBookId());
@@ -30,7 +38,7 @@ public class BookDAO {
     public void viewBooks(){
         String sql = "SELECT b.book_id,b.title,b.author,b.available,u.name FROM books b LEFT JOIN users u ON b.issued_to = u.user_id";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while(rs.next()){
@@ -50,7 +58,7 @@ public class BookDAO {
     public Book searchBookById(int book_id){
         String sql ="select * from books where book_id = ?";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,book_id);
             ResultSet rs = pst.executeQuery();
@@ -69,12 +77,23 @@ public class BookDAO {
         return null;
     }
     public void deleteBookById(int book_id){
-        String sql = "Delete from books where book_id =?";
+        
         try{
-            Connection conn =DBConnection.getConnection();
-            PreparedStatement  pst = conn.prepareStatement(sql);
+            String checksql ="select * from issued_books where book_id = ?";
+            
+            PreparedStatement  pst = conn.prepareStatement(checksql);
             pst.setInt(1,book_id);
-            int rows =pst.executeUpdate();
+            
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                System.out.println("Cannot delete this book. It has issue history.");
+                return;
+            }
+
+            String deletesql = "Delete from books where book_id = ?";
+            PreparedStatement pst1 = conn.prepareStatement(deletesql);
+            pst1.setInt(1,book_id);
+            int rows = pst1.executeUpdate();
             if(rows>0){
                 System.out.println("Book deleted Successfully!!!!!");
             }
@@ -89,7 +108,7 @@ public class BookDAO {
     public void issueBook(int bookId, int userId){
         String sql = "Update books set available = false, issued_to= ? where book_id=?";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,userId);
             pst.setInt(2, bookId);
@@ -109,7 +128,7 @@ public class BookDAO {
     public void returnBook(int bookId){
         String sql = "Update books set available = true, issued_to = NULL where book_id = ?";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
 
             pst.setInt(1,bookId);
@@ -127,7 +146,7 @@ public class BookDAO {
     public void totalBooks(){
         String sql = "select count(*) from books";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
@@ -145,7 +164,7 @@ public class BookDAO {
     public void viewAvailableBooks(){
         String sql = "Select * from books where available = true";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while(rs.next()){
@@ -162,7 +181,7 @@ public class BookDAO {
     public void viewIssuedBooks(){
         String sql = "Select * from books where available = false";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while(rs.next()){
@@ -179,7 +198,7 @@ public class BookDAO {
     public Book searchBookByTitle(String title){
         String sql = "select * from books where title = ?";
         try{
-            Connection conn = DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1,title);
             ResultSet rs = pst.executeQuery();
@@ -196,7 +215,7 @@ public class BookDAO {
         List<Book> books= new ArrayList<>();
         String sql = "select * from books where author like ?";
         try{
-            Connection conn =DBConnection.getConnection();
+            
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1,"%" +author+"%");
             ResultSet rs = pst.executeQuery();
@@ -212,7 +231,7 @@ public class BookDAO {
 
     public void libraryStatistics(){
         try{
-            Connection conn = DBConnection.getConnection();
+            
             Statement stmt = conn.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery("SELECT COUNT(*) FROM BOOKS");
