@@ -1,1 +1,53 @@
+# Compiled Java class files
 *.class
+
+# Log files
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# NetBeans
+nbproject/
+build/
+dist/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Environment files
+.env
+
+# Temporary files
+*.tmp
+*.bak
+
+# Generated database files (if any)
+*.db
+*.sqlite
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/

@@ -1,6 +1,12 @@
 import java.util.Scanner;
+
+import dao.BookDAO;
+import dao.IssuedBookDAO;
+import dao.UserDAO;
+import model.Book;
+import model.User;
+
 import java.util.List;
-import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
@@ -8,6 +14,7 @@ public class Main {
         UserDAO userDAO = new UserDAO();
         BookDAO bookDAO = new BookDAO();
         IssuedBookDAO issuedBookDAO = new IssuedBookDAO();
+        System.out.println("Database connected Successfully!!!!");
         Scanner sc = new Scanner(System.in);
 
         while(true){
@@ -31,15 +38,19 @@ public class Main {
             System.out.println("15. Search Book By Author");
             System.out.println("\n---------------------------Report-------------------");
             System.out.println("16. View Available Book");
-            System.out.println("17. View Issued Book");
-            System.out.println("18. Library Statistics");
+            System.out.println("17. View Currently Issued Book");
+            System.out.println("18. View Issue History");
+            System.out.println("19. View OverDue Books");
+            System.out.println("20. TOP Readers");
+            System.out.println("21. MOST ISSUED Books");
+            System.out.println("22. Library Dashboard");
             System.out.println("\n --------------------Exit-------------");
-            System.out.println("19. Exit");
+            System.out.println("23. Exit");
 
             System.out.println("Enter Choice: ");
             int choice = sc.nextInt();
 
-            if(choice == 19){
+            if(choice == 23){
                 break;
             }
 
@@ -180,13 +191,32 @@ public class Main {
                     break;
                 }
                 case 17:{
-                    bookDAO.viewIssuedBooks();
+                    issuedBookDAO.viewCurrentlyIssuedBooks();
                     break;
                 }
                 case 18:{
-                    bookDAO.libraryStatistics();
+                    issuedBookDAO.viewIssuedBooksHistory();
+                    break;
+
+                }
+                case 19:{
+                    issuedBookDAO.viewOverDueBooks();
                     break;
                 }
+                case 20:{
+                    issuedBookDAO.topReaders();
+                    break;
+                }
+                case 21:{
+                    issuedBookDAO.mostIssuedBooks();
+                    break;
+                }
+                case 22:{
+                    issuedBookDAO.libraryDashBoard();
+                    break;
+
+                }
+                
                 default:{
                     System.out.println("Invalid Choice");
                     break;

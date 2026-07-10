@@ -1,9 +1,14 @@
+package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+
+import model.Book;
+import util.DBConnection;
+
 import java.util.ArrayList;
 
 public class BookDAO {
@@ -227,39 +232,6 @@ public class BookDAO {
         }
         return books;
 
-    }
-
-    public void libraryStatistics(){
-        try{
-            
-            Statement stmt = conn.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery("SELECT COUNT(*) FROM BOOKS");
-            rs.next();
-            int totalBooks = rs.getInt(1);
-
-            rs = stmt.executeQuery("Select count(*) from books where available = true");
-            rs.next();
-            int availableBooks = rs.getInt(1);
-
-            rs = stmt.executeQuery("Select count(*) from books where available = false");
-            rs.next();
-            int issuedBooks = rs.getInt(1);
-
-            rs = stmt.executeQuery("select count(*) from users");
-            rs.next();
-            int totalUsers = rs.getInt(1);
-
-            System.out.println("\n============ Libraray Statistics ===================");
-            System.out.println("Total Users       : "+totalUsers);
-            System.out.println("Total Books       : "+totalBooks);
-            System.out.println("Available Books   : "+availableBooks);
-            System.out.println("Issued Books      : "+issuedBooks);
-            System.out.println("=======================================================");
-
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
     }
 
 }
