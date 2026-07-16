@@ -30,27 +30,28 @@ public class Main {
             System.out.println("7. Add Book");
             System.out.println("8. View Book");
             System.out.println("9. Search Book By ID");
-            System.out.println("10. Delete Book");
-            System.out.println("11. Issue Book");
-            System.out.println("12. Return Book");
-            System.out.println("13. Total Books");
-            System.out.println("14. Search Book By Title");
-            System.out.println("15. Search Book By Author");
+            System.out.println("10. Update Book");
+            System.out.println("11. Delete Book");
+            System.out.println("12. Issue Book");
+            System.out.println("13. Return Book");
+            System.out.println("14. Total Books");
+            System.out.println("15. Search Book By Title");
+            System.out.println("16. Search Book By Author");
             System.out.println("\n---------------------------Report-------------------");
-            System.out.println("16. View Available Book");
-            System.out.println("17. View Currently Issued Book");
-            System.out.println("18. View Issue History");
-            System.out.println("19. View OverDue Books");
-            System.out.println("20. TOP Readers");
-            System.out.println("21. MOST ISSUED Books");
-            System.out.println("22. Library Dashboard");
+            System.out.println("17. View Available Book");
+            System.out.println("18. View Currently Issued Book");
+            System.out.println("19. View Issue History");
+            System.out.println("20. View OverDue Books");
+            System.out.println("21. TOP Readers");
+            System.out.println("22. MOST ISSUED Books");
+            System.out.println("23. Library Dashboard");
             System.out.println("\n --------------------Exit-------------");
-            System.out.println("23. Exit");
+            System.out.println("24. Exit");
 
             System.out.println("Enter Choice: ");
             int choice = sc.nextInt();
 
-            if(choice == 23){
+            if(choice == 24){
                 break;
             }
 
@@ -135,12 +136,50 @@ public class Main {
                     break;
                 }
                 case 10:{
+                    System.out.print("Enter Book Id:");
+                    int bookId=sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.println("\n What do you want to update?");
+                    System.out.println("1. Title");
+                    System.out.println("2. Author");
+                    System.out.println("3. Both");
+                    System.out.print("Enter Choice: ");
+
+                    int updateChoice = sc.nextInt();
+                    sc.nextLine();
+
+                    String title = "";
+                    String author = "";
+
+                    if(updateChoice == 1){
+                        System.out.print("Enter New Title: ");
+                        title = sc.nextLine();
+                    }
+                    else if(updateChoice == 2){
+                        System.out.println("Enter new Author: ");
+                        author = sc.nextLine();
+                    }
+                    else if (updateChoice == 3){
+                        System.out.print("Enter New Title: ");
+                        title = sc.nextLine();
+                        System.out.println("Enter New Author: ");
+                        author = sc.nextLine();
+                    }else{
+                        System.out.println("Invalid Choice.");
+                        break;
+                    }
+
+                    bookDAO.updateBook(bookId, updateChoice, title, author);
+                    break;
+                }
+                case 11:{
                     System.out.println("Enter Book Id:");
                     int deleteBookId= sc.nextInt();
                     bookDAO.deleteBookById(deleteBookId);
                     break;
                 }
-                case 11:{
+                case 12:{
                     System.out.println("Enter Book Id:");
                     int issueBookId = sc.nextInt();
                     System.out.println("Enter User Id: ");
@@ -148,17 +187,17 @@ public class Main {
                     issuedBookDAO.issueBook(issueBookId, issueUserId);
                     break;
                 }
-                case 12:{
+                case 13:{
                     System.out.println("Enter the Book Id:");
                     int returnBookId = sc.nextInt();
                     issuedBookDAO.returnBook(returnBookId);
                     break;
                 }
-                case 13:{
+                case 14:{
                     bookDAO.totalBooks();
                     break;
                 }
-                case 14:{
+                case 15:{
                     sc.nextLine();
                     System.out.println("Enter the title of Book: ");
                     String title = sc.nextLine();
@@ -171,7 +210,7 @@ public class Main {
                     }
                     break;
                 }
-                case 15:{
+                case 16:{
                     sc.nextLine();
                     System.out.println("Enter the author of Book: ");
                     String author = sc.nextLine();
@@ -186,32 +225,32 @@ public class Main {
                     break;
 
                 }
-                case 16:{
+                case 17:{
                     bookDAO.viewAvailableBooks();
                     break;
                 }
-                case 17:{
+                case 18:{
                     issuedBookDAO.viewCurrentlyIssuedBooks();
                     break;
                 }
-                case 18:{
+                case 19:{
                     issuedBookDAO.viewIssuedBooksHistory();
                     break;
 
                 }
-                case 19:{
+                case 20:{
                     issuedBookDAO.viewOverDueBooks();
                     break;
                 }
-                case 20:{
+                case 21:{
                     issuedBookDAO.topReaders();
                     break;
                 }
-                case 21:{
+                case 22:{
                     issuedBookDAO.mostIssuedBooks();
                     break;
                 }
-                case 22:{
+                case 23:{
                     issuedBookDAO.libraryDashBoard();
                     break;
 

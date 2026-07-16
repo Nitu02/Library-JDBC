@@ -2,8 +2,6 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import model.Book;
@@ -233,5 +231,61 @@ public class BookDAO {
         return books;
 
     }
+    public void updateBook(int bookId, int choice, String value1, String value2){
+        try{
+            Connection conn = DBConnection.getConnection();
+            String checkSql = "select available from books where book_id = ?";
 
+            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+            checkStmt.setInt(1, bookId);
+
+            ResultSet rs = checkStmt.executeQuery();
+            if(!rs.next()){
+                System.out.println("Book Not Found.");
+                return;
+            }
+            if(!rs.getBoolean("available")){
+                System.out.println("Book is currently issued.");
+                System.out.println("Return the book before updating.");
+                return;
+            }
+            String sql = "";
+            if(choice == 1){
+                sql = "Update books set title = ? where book_id = ?";
+                PreparedStatement pst = conn.prepareStatement(sql);
+                pst.setString(1, value1);
+                pst.setInt(2, bookId);
+
+                pst.executeUpdate();
+                System.out.println("Book Authr Updated Successfully!!!");
+
+            }
+            else if(choice == 2){
+                sql = "update books set author = ? where book_id =?";
+
+                PreparedStatement pst = conn.prepareStatement(sql);
+                pst.setString(1, value1);
+                pst.setInt(2, bookId);
+
+                pst.executeUpdate();
+
+                System.out.println("Book Author Updated Successfully!!!!!!!!!");
+            }
+            else if(choice == 3){
+                sql = "update books set title = ?, author = ? where book_id = ?";
+                PreparedStatement pst = conn.prepareStatement(sql);
+                pst.setString(1, value1);
+                pst.setString(2, value2);
+                pst.setInt(3, bookId);
+
+                pst.executeUpdate();
+                System.out.println("Book Details Updated Successfully!");
+            }
+            else{
+                System.out.println("Invalid Choice");
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 }
