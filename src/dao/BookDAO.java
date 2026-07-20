@@ -48,10 +48,10 @@ public class BookDAO {
                 String issuedTo = rs.getString("name");
                 System.out.println(
                     "Book ID: "+ rs.getInt("book_id")+
-                    ", Book Title: " + rs.getString("title") +
-                    ", Book Author: " + rs.getString("author") +
-                    ", Book Availability: " + rs.getBoolean("available") +
-                    ", Issued To: " + (issuedTo == null ? "None" : issuedTo)
+                    "|| Book Title: " + rs.getString("title") +
+                    "|| Book Author: " + rs.getString("author") +
+                    "|| Book Availability: " + rs.getBoolean("available") +
+                    "|| Issued To: " + (issuedTo == null ? "None" : issuedTo)
                 );
             }
         }catch(Exception e){
@@ -108,44 +108,6 @@ public class BookDAO {
             System.out.println(e.getMessage());
         }
     }
-    public void issueBook(int bookId, int userId){
-        String sql = "Update books set available = false, issued_to= ? where book_id=?";
-        try{
-            
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1,userId);
-            pst.setInt(2, bookId);
-
-            int rows = pst.executeUpdate();
-            if(rows>0){
-                System.out.println("Book Issued Succesfull!!!!");
-            }
-            else{
-                System.out.println("Book not Found");
-            }
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
-    public void returnBook(int bookId){
-        String sql = "Update books set available = true, issued_to = NULL where book_id = ?";
-        try{
-            
-            PreparedStatement pst = conn.prepareStatement(sql);
-
-            pst.setInt(1,bookId);
-            int rows =pst.executeUpdate();
-            if(rows>0){
-                System.out.println("Book Returned SuccessFully!!!");
-            }else{
-                System.out.println("Book not Found");
-            }
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
     public void totalBooks(){
         String sql = "select count(*) from books";
         try{
@@ -173,8 +135,8 @@ public class BookDAO {
             while(rs.next()){
                 System.out.println(
                     "Book ID: "+ rs.getInt("book_id") + 
-                    ", Title: " + rs.getString("title")+
-                    ", Author: " + rs.getString("author")
+                    "| Title: " + rs.getString("title")+
+                    "| Author: " + rs.getString("author")
                 );
             }
         }catch(Exception e){
@@ -190,8 +152,8 @@ public class BookDAO {
             while(rs.next()){
                 System.out.println(
                     "Book ID: "+ rs.getInt("book_id") + 
-                    ", Title: " + rs.getString("title")+
-                    ", Author: " + rs.getString("author")
+                    "| Title: " + rs.getString("title")+
+                    "| Author: " + rs.getString("author")
                 );
             }
         }catch(Exception e){
